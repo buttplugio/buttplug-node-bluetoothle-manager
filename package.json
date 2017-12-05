@@ -1,0 +1,82 @@
+{
+  "name": "buttplug-node-bluetoothle-manager",
+  "version": "0.0.1",
+  "description": "Bluetooth LE Manager (using Noble) for native node Buttplug servers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metafetish/buttplug-node-bluetoothle-manager.git"
+  },
+  "author": "The Metafetish Project",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/metafetish/buttplug-node-bluetoothle-manager/issues"
+  },
+  "homepage": "https://github.com/metafetish/buttplug-node-bluetoothle-manager#readme",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "trash dist dist-bundle && yarn build:all",
+    "build:all": "yarn build:node && yarn build:web && yarn build:web:release",
+    "build:node": "tsc -p config/tsconfig.json",
+    "build:doc": "typedoc --options config/typedoc.json --out doc .",
+    "build:web": "webpack --config config/webpack.config.js",
+    "build:web:release": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --progress --hide-modules",
+    "tslint": "tslint -c config/tslint.json \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "tslint:fix": "tslint -c config/tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "pretest": "yarn build:main",
+    "test": "nyc mocha \"tests/**/*.ts\"",
+    "posttest": "nyc report && codecov -f coverage/*.json"
+  },
+  "dependencies": {
+    "noble": "^1.8.1"
+  },
+  "peerDependencies": {
+    "buttplug": ">=0.4.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.8",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.54",
+    "buttplug": ">=0.4.0",
+    "chai": "^4.1.2",
+    "codecov": "^3.0.0",
+    "copyfiles": "^1.2.0",
+    "cross-env": "^5.1.1",
+    "fork-ts-checker-webpack-plugin": "^0.2.9",
+    "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
+    "trash": "^4.2.1",
+    "trash-cli": "^1.4.0",
+    "ts-loader": "^3.2.0",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "typedoc": "^0.9.0",
+    "typescript": "^2.6.2",
+    "uglifyjs-webpack-plugin": "^1.1.2",
+    "webpack": "^3.10.0",
+    "yarn": "^1.3.2"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text",
+      "json",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true,
+    "all": true,
+    "cache": false
+  }
+}
