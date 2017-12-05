@@ -17,12 +17,12 @@
   "scripts": {
     "build": "trash dist dist-bundle && yarn build:all",
     "build:all": "yarn build:node && yarn build:web && yarn build:web:release",
-    "build:node": "tsc -p config/tsconfig.json",
+    "build:node": "tsc -p tsconfig.json",
     "build:doc": "typedoc --options config/typedoc.json --out doc .",
     "build:web": "webpack --config config/webpack.config.js",
     "build:web:release": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --progress --hide-modules",
-    "tslint": "tslint -c config/tslint.json \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "tslint:fix": "tslint -c config/tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "tslint": "tslint -c tslint.json \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "tslint:fix": "tslint -c tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\"",
     "pretest": "yarn build:main",
     "test": "nyc mocha \"tests/**/*.ts\"",
     "posttest": "nyc report && codecov -f coverage/*.json"
