@@ -6,26 +6,38 @@ import { ButtplugNodeBluetoothLEDevice } from "./ButtplugNodeBluetoothLEDevice";
 export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implements IDeviceSubtypeManager {
 
   private isScanning: boolean = false;
+  private initializerPromise: Promise<void> | null;
 
   constructor() {
     super();
-    noble.on("stateChange", function(state) {
-      if (state === "poweredOn") {
-        console.log("bluetooth on!");
-      } else {
-        console.log("bluetooth off!");
-      }
-    });
     noble.on("discover", (d: noble.Peripheral) => {
       this.OpenDevice(d);
     });
   }
 
-  public StartScanning() {
+  public async Initialize() {
+    let res;
+    let rej;
+    this.initializerPromise = new Promise((resolve, reject) => {
+      res = resolve;
+      rej = reject;
+    });
+    noble.on("stateChange", function(state) {
+      if (state === "poweredOn") {
+        res();
+        return;
+      }
+      rej();
+    });
+    // TODO Add timeout here in case we don't find or have a radio.
+    await this.initializerPromise;
+  }
+
+  public async StartScanning() {
     noble.startScanning();
   }
 
-  public StopScanning() {
+  public async StopScanning() {
     noble.stopScanning();
   }
 

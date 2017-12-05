@@ -44,7 +44,6 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
 
     for (const name of Object.getOwnPropertyNames(this._deviceInfo.Characteristics)) {
       const nobleChr = this._deviceInfo.Characteristics[name].replace(/-/g, "");
-      console.log(nobleChr);
       this._characteristics.set(name,
                                 (await discoverCharsAsync([nobleChr]))[0]);
     }
