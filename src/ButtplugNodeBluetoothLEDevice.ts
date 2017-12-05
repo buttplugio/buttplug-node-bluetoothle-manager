@@ -3,12 +3,12 @@ import { EventEmitter } from "events";
 import * as noble from "noble";
 import * as util from "util";
 
-export class ButtplugBluetoothLEDevice extends EventEmitter implements IBluetoothDeviceImpl {
+export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBluetoothDeviceImpl {
 
   public static async CreateDevice(aDeviceInfo: BluetoothDeviceInfo,
                                    aDevice: noble.Peripheral):
   Promise<ButtplugBluetoothDevice> {
-    const deviceImpl = new ButtplugBluetoothLEDevice(aDeviceInfo, aDevice);
+    const deviceImpl = new ButtplugNodeBluetoothLEDevice(aDeviceInfo, aDevice);
     await deviceImpl.Connect();
     const device = await aDeviceInfo.Create(deviceImpl);
     // Use a fat arrow closure here, as we need to close over this definition of device.

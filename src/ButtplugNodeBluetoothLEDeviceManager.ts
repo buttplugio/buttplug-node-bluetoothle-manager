@@ -1,9 +1,9 @@
 import { DeviceAdded, IDeviceSubtypeManager, BluetoothDevices, BluetoothDeviceInfo } from "buttplug";
 import { EventEmitter } from "events";
 import * as noble from "noble";
-import { ButtplugBluetoothLEDevice } from "./ButtplugBluetoothLEDevice";
+import { ButtplugNodeBluetoothLEDevice } from "./ButtplugNodeBluetoothLEDevice";
 
-export class NobleBluetoothDeviceManager extends EventEmitter implements IDeviceSubtypeManager {
+export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implements IDeviceSubtypeManager {
 
   private isScanning: boolean = false;
 
@@ -40,7 +40,7 @@ export class NobleBluetoothDeviceManager extends EventEmitter implements IDevice
     }
     for (const deviceInfo of BluetoothDevices.GetDeviceInfo()) {
       if (deviceInfo.Names.indexOf(device.advertisement.localName) > -1) {
-        const bpdevice = await ButtplugBluetoothLEDevice.CreateDevice(deviceInfo, device);
+        const bpdevice = await ButtplugNodeBluetoothLEDevice.CreateDevice(deviceInfo, device);
         this.emit("deviceadded", bpdevice);
         return;
       }
