@@ -5,5 +5,4 @@ module.exports = {
   exclude: "**/+(test|example|node_modules)/**/*.ts",
   excludeExternals: true,
   excludePrivate: true
-}
-
+};
