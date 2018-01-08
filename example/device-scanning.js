@@ -9,9 +9,11 @@ let main = async () => {
   await client.Connect(connector);
 
   const dm = new ButtplugBLE.ButtplugNodeBluetoothLEDeviceManager();
+  console.log("Initializing Bluetooth adapter...");
   await dm.Initialize();
   connector.Server.AddDeviceManager(dm);
 
+  console.log("Scanning for devices...");
   client.on("deviceadded", (device) => {
     console.log(device.Name);
   });
