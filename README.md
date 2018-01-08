@@ -73,7 +73,7 @@ of supported devices.
 
 ## License
 
-ProjectName is BSD 3-Clause licensed.
+BSD 3-Clause licensed
 
     Copyright (c) 2017, Metafetish
     All rights reserved.
