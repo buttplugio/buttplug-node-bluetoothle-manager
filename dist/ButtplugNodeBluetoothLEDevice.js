@@ -154,6 +154,13 @@ var ButtplugNodeBluetoothLEDevice = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ButtplugNodeBluetoothLEDevice.prototype, "Id", {
+        get: function () {
+            return this._device.id;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ButtplugNodeBluetoothLEDevice;
 }(events_1.EventEmitter));
 exports.ButtplugNodeBluetoothLEDevice = ButtplugNodeBluetoothLEDevice;

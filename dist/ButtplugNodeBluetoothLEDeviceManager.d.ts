@@ -8,6 +8,6 @@ export declare class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter i
     Initialize(): Promise<void>;
     StartScanning(): Promise<void>;
     StopScanning(): Promise<void>;
-    IsScanning(): boolean;
+    readonly IsScanning: boolean;
     private OpenDevice;
 }

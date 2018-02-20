@@ -117,6 +117,7 @@ var ButtplugNodeBluetoothLEDeviceManager = /** @class */ (function (_super) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 noble.startScanning();
+                this.isScanning = true;
                 return [2 /*return*/];
             });
         });
@@ -125,13 +126,18 @@ var ButtplugNodeBluetoothLEDeviceManager = /** @class */ (function (_super) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 noble.stopScanning();
+                this.isScanning = false;
                 return [2 /*return*/];
             });
         });
     };
-    ButtplugNodeBluetoothLEDeviceManager.prototype.IsScanning = function () {
-        return false;
-    };
+    Object.defineProperty(ButtplugNodeBluetoothLEDeviceManager.prototype, "IsScanning", {
+        get: function () {
+            return this.isScanning;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ButtplugNodeBluetoothLEDeviceManager;
 }(events_1.EventEmitter));
 exports.ButtplugNodeBluetoothLEDeviceManager = ButtplugNodeBluetoothLEDeviceManager;

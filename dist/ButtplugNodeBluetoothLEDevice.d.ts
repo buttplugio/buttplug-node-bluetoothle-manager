@@ -10,8 +10,9 @@ export declare class ButtplugNodeBluetoothLEDevice extends EventEmitter implemen
     private _characteristics;
     constructor(_deviceInfo: BluetoothDeviceInfo, _device: noble.Peripheral);
     readonly Name: string;
+    readonly Id: string;
     Connect: () => Promise<void>;
     OnDisconnect: () => void;
     WriteValue: (aCharacteristic: string, aValue: Uint8Array) => Promise<void>;
-    ReadValue: (aCharacteristic: string) => Promise<ArrayBuffer | ArrayBufferView>;
+    ReadValue: (aCharacteristic: string) => Promise<BufferSource>;
 }
