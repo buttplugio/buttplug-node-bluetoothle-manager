@@ -31,6 +31,10 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
     return this._device.advertisement.localName!;
   }
 
+  public get Id(): string {
+    return this._device.id;
+  }
+
   public Connect = async (): Promise<void> => {
     const connectAsync = util.promisify(this._device.connect.bind(this._device));
     await connectAsync();

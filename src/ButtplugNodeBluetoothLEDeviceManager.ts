@@ -35,14 +35,16 @@ export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implement
 
   public async StartScanning() {
     noble.startScanning();
+    this.isScanning = true;
   }
 
   public async StopScanning() {
     noble.stopScanning();
+    this.isScanning = false;
   }
 
-  public IsScanning(): boolean {
-    return false;
+  public get IsScanning(): boolean {
+    return this.isScanning;
   }
 
   private OpenDevice = async (device: noble.Peripheral): Promise<void> => {
