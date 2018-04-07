@@ -46,6 +46,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
+var noble;
+try {
+    noble = require("noble-uwp");
+}
+catch (e) {
+    noble = require("noble");
+}
 var util = require("util");
 var ButtplugNodeBluetoothLEDevice = /** @class */ (function (_super) {
     __extends(ButtplugNodeBluetoothLEDevice, _super);

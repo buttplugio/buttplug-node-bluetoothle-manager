@@ -47,7 +47,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var buttplug_1 = require("buttplug");
 var events_1 = require("events");
-var noble = require("noble");
+var noble;
+try {
+    noble = require("noble-uwp");
+}
+catch (e) {
+    noble = require("noble");
+}
 var ButtplugNodeBluetoothLEDevice_1 = require("./ButtplugNodeBluetoothLEDevice");
 var ButtplugNodeBluetoothLEDeviceManager = /** @class */ (function (_super) {
     __extends(ButtplugNodeBluetoothLEDeviceManager, _super);
