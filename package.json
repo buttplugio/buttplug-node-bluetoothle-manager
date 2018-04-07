@@ -25,7 +25,7 @@
     "posttest": "nyc report && codecov -f coverage/*.json"
   },
   "dependencies": {
-    "noble": "^1.9.0"
+    "noble-uwp": "^0.6.1"
   },
   "peerDependencies": {
     "buttplug": ">=0.6.0"

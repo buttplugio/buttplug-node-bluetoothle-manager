@@ -1,6 +1,11 @@
 import { DeviceAdded, IDeviceSubtypeManager, BluetoothDevices, BluetoothDeviceInfo } from "buttplug";
 import { EventEmitter } from "events";
-import * as noble from "noble";
+let noble;
+try {
+  noble = require("noble-uwp");
+} catch (e) {
+  noble = require("noble");
+}
 import { ButtplugNodeBluetoothLEDevice } from "./ButtplugNodeBluetoothLEDevice";
 
 export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implements IDeviceSubtypeManager {
@@ -10,7 +15,7 @@ export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implement
 
   constructor() {
     super();
-    noble.on("discover", (d: noble.Peripheral) => {
+    noble.on("discover", (d: any) => {
       this.OpenDevice(d);
     });
   }
@@ -47,7 +52,7 @@ export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implement
     return this.isScanning;
   }
 
-  private OpenDevice = async (device: noble.Peripheral): Promise<void> => {
+  private OpenDevice = async (device: any): Promise<void> => {
     if (device === undefined) {
       // TODO Throw here?
       return;
