@@ -1,6 +1,6 @@
 {
   "name": "buttplug-node-bluetoothle-manager",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Bluetooth LE Manager (using Noble) for native node Buttplug servers",
   "repository": {
     "type": "git",
@@ -19,61 +19,23 @@
     "build:all": "tsc -p tsconfig.json",
     "build:doc": "typedoc --options typedoc.json --out doc .",
     "tslint": "tslint -c tslint.json \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "tslint:fix": "tslint -c tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\"",
-    "pretest": "yarn build:main",
-    "test": "nyc mocha \"tests/**/*.ts\"",
-    "posttest": "nyc report && codecov -f coverage/*.json"
+    "tslint:fix": "tslint -c tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\""
   },
   "dependencies": {
     "noble-uwp": "^0.6.1"
   },
   "peerDependencies": {
-    "buttplug": ">=0.6.0"
+    "buttplug": ">=0.6.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.2",
-    "@types/mocha": "^2.2.48",
-    "@types/node": "^9.4.6",
-    "buttplug": ">=0.6.0",
-    "chai": "^4.1.2",
-    "codecov": "^3.0.0",
-    "copyfiles": "^1.2.0",
-    "cross-env": "^5.1.3",
-    "fork-ts-checker-webpack-plugin": "^0.3.0",
-    "mocha": "^5.0.1",
-    "nyc": "^11.4.1",
-    "trash": "^4.2.1",
+    "buttplug": ">=0.6.1",
+    "cross-env": "^5.1.4",
+    "trash": "^4.3.0",
     "trash-cli": "^1.4.0",
-    "ts-loader": "^3.5.0",
-    "ts-node": "^5.0.0",
+    "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
-    "typedoc": "^0.10.0",
-    "typescript": "^2.7.2",
-    "uglifyjs-webpack-plugin": "^1.2.0",
-    "webpack": "^3.11.0",
-    "yarn": "^1.3.2"
-  },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "include": [
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "**/*.d.ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "reporter": [
-      "text",
-      "json",
-      "html"
-    ],
-    "sourceMap": true,
-    "instrument": true,
-    "all": true,
-    "cache": false
+    "typedoc": "^0.11.1",
+    "typescript": "^2.8.1",
+    "yarn": "^1.5.1"
   }
 }

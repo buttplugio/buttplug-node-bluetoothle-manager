@@ -1,3 +1,8 @@
+# 0.0.3 - 2018/04/06
+
+- Update dependencies
+- Move to noble-uwp for Win7/Win10 support
+
 # 0.0.2 - 2018/02/19
 
 - Update dependencies
