@@ -24,6 +24,14 @@ can
 Every donation helps us afford more hardware to reverse, document, and
 write code for!
 
+## IMPORTANT BUILD NOTE
+
+**DO NOT USE YARN TO INSTALL THIS**
+
+Installing with yarn will break the native dependencies required for
+this package. Only use 'npm install' to install this. Afterwards,
+using yarn is fine.
+
 ## Installation
 
 To install buttplug-js in your node project via npm, a simple add call

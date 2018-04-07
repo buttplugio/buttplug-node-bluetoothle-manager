@@ -1,12 +1,17 @@
 import { IBluetoothDeviceImpl, BluetoothDeviceInfo, ButtplugBluetoothDevice } from "buttplug";
 import { EventEmitter } from "events";
-import * as noble from "noble";
+let noble;
+try {
+  noble = require("noble-uwp");
+} catch (e) {
+  noble = require("noble");
+}
 import * as util from "util";
 
 export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBluetoothDeviceImpl {
 
   public static async CreateDevice(aDeviceInfo: BluetoothDeviceInfo,
-                                   aDevice: noble.Peripheral):
+                                   aDevice: any):
   Promise<ButtplugBluetoothDevice> {
     const deviceImpl = new ButtplugNodeBluetoothLEDevice(aDeviceInfo, aDevice);
     await deviceImpl.Connect();
@@ -18,12 +23,12 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
     return device;
   }
 
-  private _service: noble.Service;
-  private _characteristics: Map<string, noble.Characteristic> =
-    new Map<string, noble.Characteristic>();
+  private _service: any;
+  private _characteristics: Map<string, any> =
+    new Map<string, any>();
 
   public constructor(private _deviceInfo: BluetoothDeviceInfo,
-                     private _device: noble.Peripheral) {
+                     private _device: any) {
     super();
   }
 
