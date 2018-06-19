@@ -1,7 +1,7 @@
 # Buttplug Node BluetoothLE Device Manager
 
 [![npm](https://img.shields.io/npm/v/buttplug-node-bluetoothle-manager.svg)](https://npmjs.com/package/buttplug-node-bluetoothle-manager)
-[![Build Status](https://travis-ci.org/qdot/buttplug-node-bluetoothle-manager.svg?branch=master)](https://travis-ci.org/metafetish/buttplug-node-bluetoothle-manager)
+[![Build Status](https://travis-ci.org/qdot/buttplug-node-bluetoothle-manager.svg?branch=master)](https://travis-ci.org/buttplugio/buttplug-node-bluetoothle-manager)
 
 [![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
 [![Discourse Forum](https://img.shields.io/badge/discourse-forum-blue.svg)](https://metafetish.club)
