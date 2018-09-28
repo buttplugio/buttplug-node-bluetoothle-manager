@@ -22,20 +22,21 @@
     "tslint:fix": "tslint -c tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\""
   },
   "dependencies": {
-    "noble-uwp": "^0.6.1"
+    "bluetooth-hci-socket": "https://github.com/jrobeson/node-bluetooth-hci-socket/#fix-builds-for-node-10",
+    "noble": "^1.9.1"
   },
   "peerDependencies": {
-    "buttplug": ">=0.6.1"
+    "buttplug": ">=0.8.2"
   },
   "devDependencies": {
-    "buttplug": ">=0.6.1",
-    "cross-env": "^5.1.4",
+    "buttplug": ">=0.8.2",
+    "cross-env": "^5.2.0",
     "trash": "^4.3.0",
     "trash-cli": "^1.4.0",
-    "ts-node": "^5.0.1",
-    "tslint": "^5.9.1",
-    "typedoc": "^0.11.1",
-    "typescript": "^2.8.1",
-    "yarn": "^1.5.1"
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typedoc": "^0.12.0",
+    "typescript": "^3.1.1",
+    "yarn": "^1.10.1"
   }
 }
