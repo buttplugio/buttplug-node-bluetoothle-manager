@@ -79,4 +79,20 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
     const chr = this._characteristics.get(aCharacteristic)!;
     return await util.promisify(chr.read.bind(chr))();
   }
-}
+
+  public WriteString = (aCharacteristic: string, aValue: string): Promise<void> => {
+    return Promise.resolve();
+  }
+
+  public ReadString = (aCharacteristic: string): Promise<string> => {
+    return Promise.resolve("");
+  }
+
+  public Subscribe = (aCharacteristic: string): Promise<void> => {
+    return Promise.resolve();
+  }
+
+  public Disconnect = (): Promise<void> => {
+    return Promise.resolve();
+  }
+p}
