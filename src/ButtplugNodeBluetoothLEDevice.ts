@@ -1,5 +1,7 @@
 import { IBluetoothDeviceImpl, BluetoothDeviceInfo, ButtplugBluetoothDevice } from "buttplug";
 import { EventEmitter } from "events";
+import { StringDecoder } from "string_decoder";
+
 let noble;
 try {
   noble = require("noble-uwp");
@@ -15,6 +17,7 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
   Promise<ButtplugBluetoothDevice> {
     const deviceImpl = new ButtplugNodeBluetoothLEDevice(aDeviceInfo, aDevice);
     await deviceImpl.Connect();
+
     const device = await aDeviceInfo.Create(deviceImpl);
     // Use a fat arrow closure here, as we need to close over this definition of device.
     deviceImpl.addListener("deviceremoved", () => {
@@ -26,6 +29,8 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
   private _service: any;
   private _characteristics: Map<string, any> =
     new Map<string, any>();
+  private _decoder = new StringDecoder("utf-8");
+  private _notificationHandlers = new Map<string, (boolean, string) => void>();
 
   public constructor(private _deviceInfo: BluetoothDeviceInfo,
                      private _device: any) {
@@ -48,13 +53,35 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
     // everyone else.
     let nobleServices = this._deviceInfo.Services;
     nobleServices = nobleServices.map((x) => x.replace(/-/g, ""));
-    this._service = (await discoverServicesAsync(nobleServices))[0];
-    const discoverCharsAsync = util.promisify(this._service.discoverCharacteristics.bind(this._service));
 
+    // For now, we assume we're only using one service on each device. This will
+    // most likely change in the future.
+    this._service = (await discoverServicesAsync(nobleServices))[0];
+
+    const discoverCharsAsync = util.promisify(this._service.discoverCharacteristics.bind(this._service));
     for (const name of Object.getOwnPropertyNames(this._deviceInfo.Characteristics)) {
       const nobleChr = this._deviceInfo.Characteristics[name].replace(/-/g, "");
       this._characteristics.set(name,
                                 (await discoverCharsAsync([nobleChr]))[0]);
+    }
+
+    // If no characteristics are present in the DeviceInfo block, we assume that
+    // we're connecting to a simple rx/tx service, and can query to figure out
+    // characteristics. Assume that the characteristics have tx/rx references.
+    if (this._characteristics.size === 0) {
+      const characteristics = await discoverCharsAsync([]);
+      for (const char of characteristics) {
+        if (char.properties.indexOf("write") !== -1 ||
+            char.properties.indexOf("writeWithoutResponse") !== -1 ||
+            char.properties.indexOf("reliableWrite") !== -1) {
+          this._characteristics.set("tx", char);
+        } else if (char.properties.indexOf("read") !== -1 ||
+                   char.properties.indexOf("broadcast") !== -1 ||
+                   char.properties.indexOf("notify") !== -1 ||
+                   char.properties.indexOf("indicate") !== -1) {
+          this._characteristics.set("rx", char);
+        }
+      }
     }
   }
 
@@ -80,19 +107,35 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
     return await util.promisify(chr.read.bind(chr))();
   }
 
-  public WriteString = (aCharacteristic: string, aValue: string): Promise<void> => {
-    return Promise.resolve();
+  public WriteString = async (aCharacteristic: string, aValue: string): Promise<void> => {
+    return await this.WriteValue(aCharacteristic, Buffer.from(aValue));
   }
 
-  public ReadString = (aCharacteristic: string): Promise<string> => {
-    return Promise.resolve("");
+  public ReadString = async (aCharacteristic: string): Promise<string> => {
+    const value = await this.ReadValue(aCharacteristic);
+    return this._decoder.end(Buffer.from(value as ArrayBuffer));
   }
 
   public Subscribe = (aCharacteristic: string): Promise<void> => {
+    if (!this._characteristics.has(aCharacteristic)) {
+      throw new Error("Tried to access wrong characteristic!");
+    }
+    const chr = this._characteristics.get(aCharacteristic)!;
+    this._notificationHandlers.set(aCharacteristic, (aIsNotification: boolean) => {
+      this.CharacteristicValueChanged(aCharacteristic, aIsNotification);
+    });
+    chr.subscribe();
+    chr.on('notify', this._notificationHandlers.get(aCharacteristic));
     return Promise.resolve();
   }
 
   public Disconnect = (): Promise<void> => {
     return Promise.resolve();
   }
-p}
+
+  protected CharacteristicValueChanged = async (aCharName: string, aIsNotification: boolean) => {
+    // The notification doesn't come with the value, so we have to manually read it out of rx.
+    var buffer = await this.ReadValue(aCharName);
+    this.emit("characteristicvaluechanged", aCharName, buffer);
+  }
+}
