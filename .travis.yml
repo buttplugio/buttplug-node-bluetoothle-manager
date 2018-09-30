@@ -1,21 +1,21 @@
 language: node_js
 sudo: false
 node_js:
-  - 9
+  - 10
 script:
   - npm run tslint
   - npm run build:all
-  - npm run build:doc
+#  - npm run build:doc
 
 cache: yarn
 
-deploy:
-  provider: pages
-  local_dir: doc
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  on:
-    branch: master
+# deploy:
+#   provider: pages
+#   local_dir: doc
+#   skip_cleanup: true
+#   github_token: $GITHUB_TOKEN
+#   on:
+#     branch: master
 deploy:
   provider: npm
   email: kyle@nonpolynomial.com
