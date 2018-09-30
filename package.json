@@ -17,7 +17,7 @@
   "scripts": {
     "build": "trash dist dist-bundle && yarn build:all",
     "build:all": "tsc -p tsconfig.json",
-    "build:doc": "typedoc --options typedoc.json --out doc .",
+    "build:doc": "typedoc --options typedoc.js --out doc .",
     "tslint": "tslint -c tslint.json \"src/**/*.ts\" \"tests/**/*.ts\"",
     "tslint:fix": "tslint -c tslint.json --fix semicolon,comma,no-var-keyword,ordered-imports \"src/**/*.ts\" \"tests/**/*.ts\""
   },
@@ -36,7 +36,6 @@
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typedoc": "^0.12.0",
-    "typescript": "^3.1.1",
-    "yarn": "^1.10.1"
+    "typescript": "^3.1.1"
   }
 }
