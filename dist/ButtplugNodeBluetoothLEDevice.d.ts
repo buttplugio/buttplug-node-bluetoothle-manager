@@ -7,6 +7,8 @@ export declare class ButtplugNodeBluetoothLEDevice extends EventEmitter implemen
     static CreateDevice(aDeviceInfo: BluetoothDeviceInfo, aDevice: any): Promise<ButtplugBluetoothDevice>;
     private _service;
     private _characteristics;
+    private _decoder;
+    private _notificationHandlers;
     constructor(_deviceInfo: BluetoothDeviceInfo, _device: any);
     readonly Name: string;
     readonly Id: string;
@@ -14,4 +16,9 @@ export declare class ButtplugNodeBluetoothLEDevice extends EventEmitter implemen
     OnDisconnect: () => void;
     WriteValue: (aCharacteristic: string, aValue: Uint8Array) => Promise<void>;
     ReadValue: (aCharacteristic: string) => Promise<BufferSource>;
+    WriteString: (aCharacteristic: string, aValue: string) => Promise<void>;
+    ReadString: (aCharacteristic: string) => Promise<string>;
+    Subscribe: (aCharacteristic: string) => Promise<void>;
+    Disconnect: () => Promise<void>;
+    protected CharacteristicValueChanged: (aCharName: string, aIsNotification: boolean) => Promise<void>;
 }

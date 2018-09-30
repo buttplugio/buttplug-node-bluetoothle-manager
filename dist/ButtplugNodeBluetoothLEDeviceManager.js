@@ -1,8 +1,11 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -24,8 +27,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -61,29 +64,48 @@ var ButtplugNodeBluetoothLEDeviceManager = /** @class */ (function (_super) {
         var _this = _super.call(this) || this;
         _this.isScanning = false;
         _this.OpenDevice = function (device) { return __awaiter(_this, void 0, void 0, function () {
-            var _i, _a, deviceInfo, bpdevice;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _i, _a, deviceInfo, bpdevice, _b, _c, namePrefix, bpdevice;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         if (device === undefined) {
                             // TODO Throw here?
                             return [2 /*return*/];
                         }
+                        // If the device doesn't even have a name, chances are we aren't interested.
+                        if (device.advertisement.localName === undefined) {
+                            return [2 /*return*/];
+                        }
                         _i = 0, _a = buttplug_1.BluetoothDevices.GetDeviceInfo();
-                        _b.label = 1;
+                        _d.label = 1;
                     case 1:
-                        if (!(_i < _a.length)) return [3 /*break*/, 4];
+                        if (!(_i < _a.length)) return [3 /*break*/, 8];
                         deviceInfo = _a[_i];
                         if (!(deviceInfo.Names.indexOf(device.advertisement.localName) > -1)) return [3 /*break*/, 3];
                         return [4 /*yield*/, ButtplugNodeBluetoothLEDevice_1.ButtplugNodeBluetoothLEDevice.CreateDevice(deviceInfo, device)];
                     case 2:
-                        bpdevice = _b.sent();
+                        bpdevice = _d.sent();
                         this.emit("deviceadded", bpdevice);
                         return [2 /*return*/];
                     case 3:
+                        _b = 0, _c = deviceInfo.NamePrefixes;
+                        _d.label = 4;
+                    case 4:
+                        if (!(_b < _c.length)) return [3 /*break*/, 7];
+                        namePrefix = _c[_b];
+                        if (!(device.advertisement.localName.indexOf(namePrefix) !== -1)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, ButtplugNodeBluetoothLEDevice_1.ButtplugNodeBluetoothLEDevice.CreateDevice(deviceInfo, device)];
+                    case 5:
+                        bpdevice = _d.sent();
+                        this.emit("deviceadded", bpdevice);
+                        return [2 /*return*/];
+                    case 6:
+                        _b++;
+                        return [3 /*break*/, 4];
+                    case 7:
                         _i++;
                         return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/];
+                    case 8: return [2 /*return*/];
                 }
             });
         }); };

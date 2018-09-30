@@ -1,8 +1,11 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -24,8 +27,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -46,6 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = require("events");
+var string_decoder_1 = require("string_decoder");
 var noble;
 try {
     noble = require("noble-uwp");
@@ -61,25 +65,31 @@ var ButtplugNodeBluetoothLEDevice = /** @class */ (function (_super) {
         _this._deviceInfo = _deviceInfo;
         _this._device = _device;
         _this._characteristics = new Map();
+        _this._decoder = new string_decoder_1.StringDecoder("utf-8");
+        _this._notificationHandlers = new Map();
         _this.Connect = function () { return __awaiter(_this, void 0, void 0, function () {
-            var connectAsync, discoverServicesAsync, nobleServices, _a, discoverCharsAsync, _i, _b, name_1, nobleChr, _c, _d, _e;
-            return __generator(this, function (_f) {
-                switch (_f.label) {
+            var connectAsync, discoverServicesAsync, nobleServices, _a, discoverCharsAsync, _i, _b, name_1, nobleChr, _c, _d, _e, characteristics, _f, characteristics_1, char;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
                     case 0:
                         connectAsync = util.promisify(this._device.connect.bind(this._device));
                         return [4 /*yield*/, connectAsync()];
                     case 1:
-                        _f.sent();
+                        _g.sent();
                         discoverServicesAsync = util.promisify(this._device.discoverServices.bind(this._device));
                         nobleServices = this._deviceInfo.Services;
                         nobleServices = nobleServices.map(function (x) { return x.replace(/-/g, ""); });
+                        // For now, we assume we're only using one service on each device. This will
+                        // most likely change in the future.
                         _a = this;
                         return [4 /*yield*/, discoverServicesAsync(nobleServices)];
                     case 2:
-                        _a._service = (_f.sent())[0];
+                        // For now, we assume we're only using one service on each device. This will
+                        // most likely change in the future.
+                        _a._service = (_g.sent())[0];
                         discoverCharsAsync = util.promisify(this._service.discoverCharacteristics.bind(this._service));
                         _i = 0, _b = Object.getOwnPropertyNames(this._deviceInfo.Characteristics);
-                        _f.label = 3;
+                        _g.label = 3;
                     case 3:
                         if (!(_i < _b.length)) return [3 /*break*/, 6];
                         name_1 = _b[_i];
@@ -88,12 +98,32 @@ var ButtplugNodeBluetoothLEDevice = /** @class */ (function (_super) {
                         _e = [name_1];
                         return [4 /*yield*/, discoverCharsAsync([nobleChr])];
                     case 4:
-                        _d.apply(_c, _e.concat([(_f.sent())[0]]));
-                        _f.label = 5;
+                        _d.apply(_c, _e.concat([(_g.sent())[0]]));
+                        _g.label = 5;
                     case 5:
                         _i++;
                         return [3 /*break*/, 3];
-                    case 6: return [2 /*return*/];
+                    case 6:
+                        if (!(this._characteristics.size === 0)) return [3 /*break*/, 8];
+                        return [4 /*yield*/, discoverCharsAsync([])];
+                    case 7:
+                        characteristics = _g.sent();
+                        for (_f = 0, characteristics_1 = characteristics; _f < characteristics_1.length; _f++) {
+                            char = characteristics_1[_f];
+                            if (char.properties.indexOf("write") !== -1 ||
+                                char.properties.indexOf("writeWithoutResponse") !== -1 ||
+                                char.properties.indexOf("reliableWrite") !== -1) {
+                                this._characteristics.set("tx", char);
+                            }
+                            else if (char.properties.indexOf("read") !== -1 ||
+                                char.properties.indexOf("broadcast") !== -1 ||
+                                char.properties.indexOf("notify") !== -1 ||
+                                char.properties.indexOf("indicate") !== -1) {
+                                this._characteristics.set("rx", char);
+                            }
+                        }
+                        _g.label = 8;
+                    case 8: return [2 /*return*/];
                 }
             });
         }); };
@@ -127,6 +157,52 @@ var ButtplugNodeBluetoothLEDevice = /** @class */ (function (_super) {
                         chr = this._characteristics.get(aCharacteristic);
                         return [4 /*yield*/, util.promisify(chr.read.bind(chr))()];
                     case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        }); };
+        _this.WriteString = function (aCharacteristic, aValue) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.WriteValue(aCharacteristic, Buffer.from(aValue))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        }); };
+        _this.ReadString = function (aCharacteristic) { return __awaiter(_this, void 0, void 0, function () {
+            var value;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.ReadValue(aCharacteristic)];
+                    case 1:
+                        value = _a.sent();
+                        return [2 /*return*/, this._decoder.end(Buffer.from(value))];
+                }
+            });
+        }); };
+        _this.Subscribe = function (aCharacteristic) {
+            if (!_this._characteristics.has(aCharacteristic)) {
+                throw new Error("Tried to access wrong characteristic!");
+            }
+            var chr = _this._characteristics.get(aCharacteristic);
+            _this._notificationHandlers.set(aCharacteristic, function (aIsNotification) {
+                _this.CharacteristicValueChanged(aCharacteristic, aIsNotification);
+            });
+            chr.subscribe();
+            chr.on("notify", _this._notificationHandlers.get(aCharacteristic));
+            return Promise.resolve();
+        };
+        _this.Disconnect = function () {
+            return Promise.resolve();
+        };
+        _this.CharacteristicValueChanged = function (aCharName, aIsNotification) { return __awaiter(_this, void 0, void 0, function () {
+            var buffer;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.ReadValue(aCharName)];
+                    case 1:
+                        buffer = _a.sent();
+                        this.emit("characteristicvaluechanged", aCharName, buffer);
+                        return [2 /*return*/];
                 }
             });
         }); };
