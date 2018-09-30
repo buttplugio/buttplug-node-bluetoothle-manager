@@ -30,7 +30,7 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
   private _characteristics: Map<string, any> =
     new Map<string, any>();
   private _decoder = new StringDecoder("utf-8");
-  private _notificationHandlers = new Map<string, (boolean, string) => void>();
+  private _notificationHandlers = new Map<string, (aNotification: boolean, aCharName: string) => void>();
 
   public constructor(private _deviceInfo: BluetoothDeviceInfo,
                      private _device: any) {
@@ -125,7 +125,7 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
       this.CharacteristicValueChanged(aCharacteristic, aIsNotification);
     });
     chr.subscribe();
-    chr.on('notify', this._notificationHandlers.get(aCharacteristic));
+    chr.on("notify", this._notificationHandlers.get(aCharacteristic));
     return Promise.resolve();
   }
 
@@ -135,7 +135,7 @@ export class ButtplugNodeBluetoothLEDevice extends EventEmitter implements IBlue
 
   protected CharacteristicValueChanged = async (aCharName: string, aIsNotification: boolean) => {
     // The notification doesn't come with the value, so we have to manually read it out of rx.
-    var buffer = await this.ReadValue(aCharName);
+    const buffer = await this.ReadValue(aCharName);
     this.emit("characteristicvaluechanged", aCharName, buffer);
   }
 }
