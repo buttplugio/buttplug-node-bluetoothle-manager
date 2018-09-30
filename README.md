@@ -1,10 +1,16 @@
 # Buttplug Node BluetoothLE Device Manager
 
-[![npm](https://img.shields.io/npm/v/buttplug-node-bluetoothle-manager.svg)](https://npmjs.com/package/buttplug-node-bluetoothle-manager) [![Build Status](https://travis-ci.org/qdot/buttplug-node-bluetoothle-manager.svg?branch=master)](https://travis-ci.org/metafetish/buttplug-node-bluetoothle-manager) [![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
+[![npm](https://img.shields.io/npm/v/buttplug-node-bluetoothle-manager.svg)](https://npmjs.com/package/buttplug-node-bluetoothle-manager)
+[![Build Status](https://travis-ci.org/qdot/buttplug-node-bluetoothle-manager.svg?branch=master)](https://travis-ci.org/buttplugio/buttplug-node-bluetoothle-manager)
+
+[![Patreon donate button](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://www.patreon.com/qdot)
+[![Discourse Forum](https://img.shields.io/badge/discourse-forum-blue.svg)](https://metafetish.club)
+[![Discord](https://img.shields.io/discord/353303527587708932.svg?logo=discord)](https://discord.buttplug.io)
+[![Twitter](https://img.shields.io/twitter/follow/buttplugio.svg?style=social&logo=twitter)](https://twitter.com/buttplugio)
 
 Module for adding Bluetooth LE device capabilities to native Buttplug
 Node Servers (using
-[buttplug-js](https://github.com/metafetish/buttplug-js)). Uses the
+[buttplug-js](https://github.com/buttplugio/buttplug-js)). Uses the
 [Noble package](https://github.com/sandeepmistry/noble) for accessing
 native Bluetooth LE APIs.
 
@@ -18,11 +24,9 @@ native Bluetooth LE APIs.
 
 ## Support The Project
 
-If you find this project helpful, you
-can
-[support Metafetish projects via Patreon](http://patreon.com/qdot)!
-Every donation helps us afford more hardware to reverse, document, and
-write code for!
+If you find this project helpful, you can [support us via
+Patreon](http://patreon.com/qdot)! Every donation helps us afford more
+hardware to reverse, document, and write code for!
 
 ## IMPORTANT BUILD NOTE
 
@@ -49,7 +53,7 @@ buttplug-node-bluetoothle-manager in order for this to work correctly.
 ## API Documentation
 
 buttplug-node-bluetoothle-manager API Documentation is available at
-[https://metafetish.github.io/buttplug-node-bluetoothle-manager](https://metafetish.github.io/buttplug-node-bluetoothle-manager).
+[https://buttplug-node-bluetoothle-manager.docs.buttplug.io](https://buttplug-node-bluetoothle-manager.docs.buttplug.io).
 
 The documentation is rebuilt on every commit/merge to master.
 
@@ -76,14 +80,14 @@ StartScanning request and has a bluetooth radio that is connected and
 on, it will scan for bluetooth devices. The server can find all
 devices supported by the version of buttplug-js in your project. See
 the [buttplug-js
-README](https://github.com/metafetish/buttplug-js#readme) for a list
+README](https://github.com/buttplugio/buttplug-js#readme) for a list
 of supported devices.
 
 ## License
 
 BSD 3-Clause licensed
 
-    Copyright (c) 2017, Metafetish
+    Copyright (c) 2017-2018, Nonpolynomial Labs, LLC
     All rights reserved.
     
     Redistribution and use in source and binary forms, with or without

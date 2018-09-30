@@ -57,12 +57,24 @@ export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implement
       // TODO Throw here?
       return;
     }
+    // If the device doesn't even have a name, chances are we aren't interested.
+    if (device.advertisement.localName === undefined) {
+      return;
+    }
     for (const deviceInfo of BluetoothDevices.GetDeviceInfo()) {
       if (deviceInfo.Names.indexOf(device.advertisement.localName) > -1) {
         const bpdevice = await ButtplugNodeBluetoothLEDevice.CreateDevice(deviceInfo, device);
         this.emit("deviceadded", bpdevice);
         return;
       }
+      for (const namePrefix of deviceInfo.NamePrefixes) {
+        if (device.advertisement.localName.indexOf(namePrefix) !== -1) {
+          const bpdevice = await ButtplugNodeBluetoothLEDevice.CreateDevice(deviceInfo, device);
+          this.emit("deviceadded", bpdevice);
+          return;
+        }
+      }
     }
+
   }
 }

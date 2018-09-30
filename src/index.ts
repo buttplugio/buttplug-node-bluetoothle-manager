@@ -1,2 +1,2 @@
 export * from "./ButtplugNodeBluetoothLEDeviceManager";
-export * from "./ButtplugNodeBluetoothLEDevice"
+export * from "./ButtplugNodeBluetoothLEDevice";
