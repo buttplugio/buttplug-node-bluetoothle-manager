@@ -1,4 +1,4 @@
-import { DeviceAdded, IDeviceSubtypeManager, BluetoothDevices, BluetoothDeviceInfo } from "buttplug";
+import { DeviceAdded, IDeviceSubtypeManager, BluetoothDevices, BluetoothDeviceInfo, ButtplugLogger } from "buttplug";
 import { EventEmitter } from "events";
 let noble;
 try {
@@ -12,6 +12,8 @@ export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implement
 
   private isScanning: boolean = false;
   private initializerPromise: Promise<void> | null;
+  // Set to default logger to make sure we have something at startup.
+  private logger: ButtplugLogger = ButtplugLogger.Logger;
 
   constructor() {
     super();
@@ -50,6 +52,10 @@ export class ButtplugNodeBluetoothLEDeviceManager extends EventEmitter implement
 
   public get IsScanning(): boolean {
     return this.isScanning;
+  }
+
+  public SetLogger(aLogger: ButtplugLogger) {
+    this.logger = aLogger;
   }
 
   private OpenDevice = async (device: any): Promise<void> => {
