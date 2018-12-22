@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -63,6 +63,8 @@ var ButtplugNodeBluetoothLEDeviceManager = /** @class */ (function (_super) {
     function ButtplugNodeBluetoothLEDeviceManager() {
         var _this = _super.call(this) || this;
         _this.isScanning = false;
+        // Set to default logger to make sure we have something at startup.
+        _this.logger = buttplug_1.ButtplugLogger.Logger;
         _this.OpenDevice = function (device) { return __awaiter(_this, void 0, void 0, function () {
             var _i, _a, deviceInfo, bpdevice, _b, _c, namePrefix, bpdevice;
             return __generator(this, function (_d) {
@@ -166,6 +168,9 @@ var ButtplugNodeBluetoothLEDeviceManager = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    ButtplugNodeBluetoothLEDeviceManager.prototype.SetLogger = function (aLogger) {
+        this.logger = aLogger;
+    };
     return ButtplugNodeBluetoothLEDeviceManager;
 }(events_1.EventEmitter));
 exports.ButtplugNodeBluetoothLEDeviceManager = ButtplugNodeBluetoothLEDeviceManager;
