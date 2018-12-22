@@ -1,6 +1,6 @@
 {
   "name": "buttplug-node-bluetoothle-manager",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Bluetooth LE Manager (using Noble) for native node Buttplug servers",
   "repository": {
     "type": "git",

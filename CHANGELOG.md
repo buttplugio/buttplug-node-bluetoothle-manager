@@ -1,3 +1,8 @@
+# 0.1.0 - 2018/12/21
+
+- Update dependencies
+- Update device API for buttplug 0.10 API
+
 # 0.0.4 - 2018/09/29
 
 - Update dependencies
